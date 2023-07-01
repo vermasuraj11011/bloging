@@ -92,7 +92,7 @@ public class PostController {
         return ResponseEntity.ok(postDtoList);
     }
 
-//    upload image to the image folder
+    //    upload image to the image folder
     @PostMapping("/image/upload")
     public ResponseEntity<FileResponse> fileUpload(
             @RequestParam MultipartFile image
@@ -110,7 +110,7 @@ public class PostController {
         return new ResponseEntity<>(fileResponse, HttpStatus.OK);
     }
 
-//    download image from the image folder and sent in the response
+    //    download image from the image folder and sent in the response
     @GetMapping(value = "/image/{fileName}", produces = MediaType.IMAGE_PNG_VALUE)
     public void downloadImage(
             @PathVariable String fileName,
@@ -121,7 +121,7 @@ public class PostController {
         StreamUtils.copy(resource, response.getOutputStream());
     }
 
-//    upload a image in the post
+    //    upload a image in the post
     @PostMapping(value = "/post/image/upload/{postId}")
     public ResponseEntity<PostDto> uploadPostImage(
             @RequestBody MultipartFile image,
@@ -132,5 +132,16 @@ public class PostController {
         postDto.setImageName(imageName);
         PostDto updatedDto = this.postService.updatePost(postDto, postId);
         return ResponseEntity.ok(updatedDto);
+    }
+
+    @GetMapping(value = "/post/image/{postId}", produces = MediaType.IMAGE_PNG_VALUE)
+    public void getPostImage(
+            @PathVariable Integer postId,
+            HttpServletResponse response
+    ) throws IOException {
+        PostDto postDto = this.postService.getPostById(postId);
+        InputStream resource = this.fileService.getResources(path, postDto.getImageName());
+        response.setContentType(MediaType.IMAGE_PNG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
     }
 }
