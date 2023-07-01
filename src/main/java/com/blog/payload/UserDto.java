@@ -1,5 +1,6 @@
 package com.blog.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class UserDto {
 
     @NotEmpty
     @Size(min = 4,message = "Password should be more than 4 character")
+    @JsonIgnore
     private String password;
 
     @NotEmpty
