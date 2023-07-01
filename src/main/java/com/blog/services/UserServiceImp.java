@@ -1,6 +1,9 @@
 package com.blog.services;
 
+import com.blog.config.AppConstants;
+import com.blog.entities.Role;
 import com.blog.payload.UserDto;
+import com.blog.repositories.RoleRepository;
 import com.blog.repositories.UserRepository;
 import com.blog.entities.User;
 import com.blog.exceptions.ResourceNotFoundException;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,9 +29,22 @@ public class UserServiceImp implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDto registerUser(UserDto userDto) {
-        return null;
+        User user = this.modelMapper.map(userDto, User.class);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        Role role = this.roleRepository
+                .findById(AppConstants.NORMAL_USER)
+                .orElseThrow(() -> new ResourceNotFoundException("Role", "id", AppConstants.NORMAL_USER));
+        user.getRoles().add(role);
+        User newUser = this.userRepository.save(user);
+        return this.modelMapper.map(newUser, UserDto.class);
     }
 
     @Override

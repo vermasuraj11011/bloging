@@ -2,9 +2,12 @@ package com.blog.controller;
 
 import com.blog.exceptions.ApiException;
 import com.blog.payload.JWTAuthRequest;
+import com.blog.payload.UserDto;
 import com.blog.response.JWTAuthResponse;
 import com.blog.security.JWTTokenHelper;
+import com.blog.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,6 +32,9 @@ public class AuthController {
     @Autowired
     private JWTTokenHelper jwtTokenHelper;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/login")
     public ResponseEntity<JWTAuthResponse> createToken(@RequestBody JWTAuthRequest request) throws Exception {
         this.authenticate(request.getUserName(), request.getPassword());
@@ -45,10 +51,16 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(userName, password);
         try {
             this.authenticationManager.authenticate(authenticationToken);
-        }catch (BadCredentialsException e){
+        } catch (BadCredentialsException e) {
             System.out.println("Invalid Details !!");
             throw new ApiException("Invalid UserName or Password");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+        UserDto registerNewUser = this.userService.registerUser(userDto);
+        return new ResponseEntity<>(registerNewUser, HttpStatus.CREATED);
     }
 
 }
