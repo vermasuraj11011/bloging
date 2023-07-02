@@ -15,8 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
-@EnableGlobalMethodSecurity(prePostEnabled = true
-)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserController {
 
     @Autowired
