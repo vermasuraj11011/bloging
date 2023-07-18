@@ -107,14 +107,11 @@ public class SecurityConf {
      * }
      *
      *
-     *8@Override
+     *@Override
      *protected void configure(AuthenticationManagerBuilder auth) throws Exception {
      *auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder());
      *}
      *
-     * @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-     * auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder());
-     * }
      * @Bean
      * @Override public AuthenticationManager authenticationManagerBean() throws Exception {
      * return super.authenticationManagerBean();

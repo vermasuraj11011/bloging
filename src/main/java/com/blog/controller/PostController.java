@@ -7,6 +7,9 @@ import com.blog.response.FileResponse;
 import com.blog.response.PostResponse;
 import com.blog.services.FileService;
 import com.blog.services.PostService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -35,6 +38,9 @@ public class PostController {
 
     @Value("${project.image}")
     private String path;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDto> getPostById(@PathVariable Integer postId) {
@@ -143,5 +149,21 @@ public class PostController {
         InputStream resource = this.fileService.getResources(path, postDto.getImageName());
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
+    }
+
+    /**
+     * handling file request and json simultaneously
+     */
+    @PostMapping("/post/file")
+    public ResponseEntity<PostDto> takingJsonAndImageDataInReq(
+            @RequestParam MultipartFile file,
+            @RequestParam String postDtoStr
+    ) throws JsonProcessingException {
+        System.out.println(file.getOriginalFilename());
+        System.out.println(postDtoStr);
+
+//        this will convert json string to json object
+        PostDto postDto = this.objectMapper.readValue(postDtoStr, PostDto.class);
+        return ResponseEntity.ok(postDto);
     }
 }
