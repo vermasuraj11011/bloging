@@ -47,3 +47,6 @@ http://localhost:8080/swagger-ui/index.html
 - First, register yourself using register API from the auth controller
 - Then login from the login API from the same controller, copy the token and add to Authorise with "Bearer" in front of the token value.
 - Now you can access all the user-permitted APIs.
+
+## Swagger Api
+![Swagger](./src/main/resources/static/image/bloging_app.png)
