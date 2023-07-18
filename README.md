@@ -50,3 +50,28 @@ http://localhost:8080/swagger-ui/index.html
 
 ## Swagger Api
 ![Swagger](./src/main/resources/static/image/bloging_app.png)
+
+## Running the application locally
+
+There are several ways to run a Spring Boot application on your local machine.
+
+- One way is to execute the `main` method in the `src.main.java.com.contactManager.ContactManagerApplication`
+  class from your IDE.
+
+
+- Or you can use the command given below while in the target project:
+
+```shell
+mvn spring-boot:run
+```
+
+## 🚀 About Me
+
+### Hi, I'm Suraj Verma! 👋
+
+I'm a full stack developer...
+<br>
+`vermasuraj@gmail.com`
+
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://surajverma008.netlify.app/) <br>
+[!
